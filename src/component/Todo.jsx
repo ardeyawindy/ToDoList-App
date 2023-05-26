@@ -6,6 +6,10 @@ import { PencilSquare, Trash } from "react-bootstrap-icons";
 import "./Todo.css";
 
 function Todo() {
+  useEffect(() => {
+    document.title = "To Do List";
+  }, []);
+
   const [newTodo, setNewTodo] = useState("");
   const [editTodoId, setEditTodoId] = useState(null);
   const [editTodoText, setEditTodoText] = useState("");
