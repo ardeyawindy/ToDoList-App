@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addTodo, toggleTodo, deleteTodo, editTodo, showAll, showActive, showCompleted } from "../redux/actions/actions";
+import { addTodo, toggleTodo, deleteTodo, editTodo, showAll, showActive, showCompleted } from "../redux/actions";
 import { Form, Button, Container, Row, Col, ListGroup } from "react-bootstrap";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
+import "./Todo.css";
 
 function Todo() {
   const [newTodo, setNewTodo] = useState("");
@@ -76,14 +77,14 @@ function Todo() {
     <div>
       <Container>
         {/* title */}
-        <div className="text-center fs-2 mt-5 mb-3 fw-bold">To Do List</div>
+        <h2 className="text-center fs-2 mt-5 mb-5 fw-bold">What's the plan for today?</h2>
         {/* input data */}
         <div>
           <Row className="justify-content-center">
-            <Col xs={6} md={5} className="d-flex justify-content-center">
+            <Col xs={12} md={6} className="d-flex justify-content-center">
               <Form.Control type="text" value={newTodo} onChange={handleInputChange} placeholder="What to do" />
               <div className="mx-2">
-                <Button variant="primary" onClick={handleAddTodo}>
+                <Button variant="primary" onClick={handleAddTodo} style={{ backgroundColor: "#BA90C6", border: "none" }}>
                   Add
                 </Button>
               </div>
@@ -92,18 +93,19 @@ function Todo() {
         </div>
         {/* button */}
         <div className="mt-3 d-flex justify-content-center">
-          <Button className="me-2 rounded-4" variant={filter === "SHOW_ALL" ? "primary" : "light"} onClick={handleFilterAll}>
+          <Button className={`me-2 rounded-5 ${filter === "SHOW_ALL" ? "button-active" : "button-inactive"}`} onClick={handleFilterAll} style={{ fontSize: "14px", padding: "5px 10px", border: "none" }}>
             All
           </Button>
-          <Button className="me-2 rounded-4" variant={filter === "SHOW_ACTIVE" ? "primary" : "light"} onClick={handleFilterActive}>
+          <Button className={`me-2 rounded-5 ${filter === "SHOW_ACTIVE" ? "button-active" : "button-inactive"}`} onClick={handleFilterActive} style={{ fontSize: "14px", padding: "5px 10px", border: "none" }}>
             Active
           </Button>
-          <Button className="rounded-4" variant={filter === "SHOW_COMPLETED" ? "primary" : "light"} onClick={handleFilterCompleted}>
+          <Button className={`rounded-5 ${filter === "SHOW_COMPLETED" ? "button-active" : "button-inactive"}`} onClick={handleFilterCompleted} style={{ fontSize: "14px", padding: "5px 10px", border: "none" }}>
             Completed
           </Button>
         </div>
+
         {/* penampil data */}
-        <ListGroup>
+        <ListGroup style={{ maxWidth: "550px", margin: "0 auto", marginTop: "20px" }}>
           {todos
             .filter((todo) => {
               if (filter === "SHOW_ACTIVE") {
@@ -115,26 +117,32 @@ function Todo() {
               }
             })
             .map((todo) => (
-              <ListGroup.Item key={todo.id} className="d-flex align-items-center">
-                <input type="checkbox" checked={todo.completed} onChange={() => handleToggleTodo(todo.id)} />
-                {editTodoId === todo.id ? (
-                  <div className="d-flex align-items-center">
-                    <input type="text" value={editTodoText} onChange={handleEditInputChange} />
-                    <Button variant="primary" onClick={handleSaveEdit}>
-                      Save
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="d-flex align-items-center">
-                    <span>{todo.text}</span>
-                    <Button variant="link" onClick={() => handleEditTodo(todo)}>
-                      <PencilSquare /> {/* Ikon Edit */}
-                    </Button>
-                  </div>
-                )}
-                <Button variant="link" onClick={() => handleDeleteTodo(todo.id)}>
-                  <Trash /> {/* Ikon Delete */}
-                </Button>
+              <ListGroup.Item key={todo.id} className="d-flex align-items-center" style={{ fontSize: "16px" }}>
+                <div className="d-flex align-items-center">
+                  <input type="checkbox" checked={todo.completed} onChange={() => handleToggleTodo(todo.id)} style={{ marginRight: "10px", transform: "scale(1.5)" }} />
+
+                  {editTodoId === todo.id ? (
+                    <div className="d-flex align-items-center">
+                      <input type="text" value={editTodoText} onChange={handleEditInputChange} />
+                      <Button variant="primary" onClick={handleSaveEdit} className="ms-2" style={{ backgroundColor: "#ba90c6", fontSize: "12px", padding: "5px 10px" }}>
+                        Save
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="d-flex align-items-center">
+                      <span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>{todo.text}</span>
+                    </div>
+                  )}
+                </div>
+                <div className="ms-auto">
+                  <Button variant="link" onClick={() => handleEditTodo(todo)} style={{ fontSize: "18px", color: "#BA90C6" }}>
+                    <PencilSquare />
+                  </Button>
+
+                  <Button variant="link" onClick={() => handleDeleteTodo(todo.id)} style={{ fontSize: "18px", color: "#BA90C6" }}>
+                    <Trash />
+                  </Button>
+                </div>
               </ListGroup.Item>
             ))}
         </ListGroup>

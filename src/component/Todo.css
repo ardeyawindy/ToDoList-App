@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
+
+* {
+  font-family: "Rubik", sans-serif;
+}
+
+.button-active,
+.button-active:hover,
+.button-active:focus {
+  background-color: #ba90c6 !important;
+  color: #fff;
+  border: none;
+}
+
+.button-inactive,
+.button-inactive:hover,
+.button-inactive:focus {
+  background-color: #6c757d !important;
+  color: #fff;
+  border: none;
+}
